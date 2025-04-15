@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Traffic Management Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Sidebar -->
+    <div class="sidebar fixed inset-y-0 left-0 w-64 bg-indigo-600 text-white transform transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between p-4">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-traffic-light text-2xl"></i>
+                <span class="text-xl font-bold">Traffic Control</span>
+            </div>
+            <button id="sidebarToggle" class="md:hidden">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="mt-8">
+            <a href="index.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-home w-6"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="incidents.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-exclamation-triangle w-6"></i>
+                <span>Incidents</span>
+            </a>
+            <a href="analytics.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-chart-line w-6"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-users w-6"></i>
+                <span>Personnel</span>
+            </a>
+            <a href="settings.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-cog w-6"></i>
+                <span>Settings</span>
+            </a>
+            <a href="about.html" class="sidebar-item active flex items-center space-x-3">
+                <i class="fas fa-info-circle w-6"></i>
+                <span>About Us</span>
+            </a>
+        </nav>
+        
+        <!-- User Profile Section -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-indigo-700">
+            <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                    <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Profile Picture" class="w-10 h-10 rounded-full border-2 border-white">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">John Anderson</p>
+                    <p class="text-xs text-indigo-200 truncate">Traffic Controller</p>
+                </div>
+                <div>
+                    <button class="text-white hover:text-indigo-200 transition-colors" id="userMenuButton">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div id="userMenu" class="absolute bottom-20 right-4 w-48 bg-white rounded-lg shadow-lg hidden z-50">
+                        <ul class="py-1 text-sm text-gray-700">
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-user mr-2"></i>View Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="settings.html" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-cog mr-2"></i>Account Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="login.html" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Sign Out
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">About Us</h1>
+            <div class="flex items-center space-x-4">
+                <button id="headerAddIncidentBtn" class="btn-primary flex items-center space-x-2" onclick="openIncidentModal()">
+                    <i class="fas fa-plus"></i>
+                    <span>New Incident</span>
+                </button>
+                <div class="relative">
+                    <button class="flex items-center space-x-2 text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bell"></i>
+                        <span class="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Us Section -->
+        <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-traffic-light mr-2 text-indigo-600"></i>Our Traffic Management System
+                </h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    Welcome to our state-of-the-art Traffic Management System, designed to revolutionize how cities monitor, analyze, and respond to traffic incidents. Our platform combines real-time data analytics, intelligent incident management, and comprehensive reporting to provide traffic authorities with the tools they need to make informed decisions and improve urban mobility.
+                </p>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    Founded in 2023, our team of experienced traffic engineers and software developers is dedicated to creating solutions that make roads safer and commutes more efficient. We believe that by leveraging cutting-edge technology, we can significantly reduce congestion, minimize accident response times, and enhance the overall transportation experience.
+                </p>
+                <p class="text-gray-700 leading-relaxed">
+                    Our system is currently being utilized by transportation departments in several major cities, helping them achieve remarkable improvements in traffic flow and incident resolution times.
+                </p>
+            </div>
+
+            <!-- Technology Section -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-microchip mr-2 text-indigo-600"></i>Technology Stack
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center mb-3">
+                            <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-3">
+                                <i class="fas fa-database text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold">Real-time Data Processing</h3>
+                        </div>
+                        <p class="text-gray-600">
+                            Our system processes thousands of data points per second from traffic sensors, cameras, and user reports to provide an accurate real-time traffic picture.
+                        </p>
+                    </div>
+                    <div class="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center mb-3">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600 mr-3">
+                                <i class="fas fa-chart-line text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold">Advanced Analytics</h3>
+                        </div>
+                        <p class="text-gray-600">
+                            Sophisticated algorithms analyze traffic patterns, predict congestion, and identify potential incident hotspots before they become problematic.
+                        </p>
+                    </div>
+                    <div class="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center mb-3">
+                            <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-3">
+                                <i class="fas fa-mobile-alt text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold">Responsive Design</h3>
+                        </div>
+                        <p class="text-gray-600">
+                            Our platform works seamlessly across all devices, enabling traffic managers to monitor and respond to incidents from anywhere, at any time.
+                        </p>
+                    </div>
+                    <div class="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center mb-3">
+                            <div class="p-3 rounded-full bg-red-100 text-red-600 mr-3">
+                                <i class="fas fa-bell text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold">Intelligent Alerts</h3>
+                        </div>
+                        <p class="text-gray-600">
+                            Customizable notification system ensures that the right personnel are alerted immediately when incidents occur, reducing response times.
+                        </p>
+                    </div>
+                    <div class="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center mb-3">
+                            <div class="p-3 rounded-full bg-yellow-100 text-yellow-600 mr-3">
+                                <i class="fas fa-map-marked-alt text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold">Interactive Mapping</h3>
+                        </div>
+                        <p class="text-gray-600">
+                            High-resolution, interactive maps with real-time traffic overlay provide an intuitive visual representation of your city's traffic situation.
+                        </p>
+                    </div>
+                    <div class="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center mb-3">
+                            <div class="p-3 rounded-full bg-indigo-100 text-indigo-600 mr-3">
+                                <i class="fas fa-shield-alt text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold">Secure Infrastructure</h3>
+                        </div>
+                        <p class="text-gray-600">
+                            End-to-end encryption, regular security audits, and compliance with industry standards ensure your traffic data remains secure and private.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Section -->
+            <div>
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6">
+                    <i class="fas fa-users mr-2 text-indigo-600"></i>Meet Our Team
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Team Member 1 -->
+                    <div class="text-center">
+                        <div class="relative mb-4 mx-auto w-40 h-40 rounded-full overflow-hidden border-4 border-indigo-500 shadow-lg">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Team Member" class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">John Davis</h3>
+                        <p class="text-indigo-600 font-medium">Chief Technical Officer</p>
+                        <p class="text-gray-600 mt-2">Former traffic engineer with 15+ years of experience in urban mobility solutions.</p>
+                        <div class="flex justify-center mt-3 space-x-3">
+                            <a href="#" class="text-blue-500 hover:text-blue-700">
+                                <i class="fab fa-linkedin text-lg"></i>
+                            </a>
+                            <a href="#" class="text-blue-400 hover:text-blue-600">
+                                <i class="fab fa-twitter text-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-700 hover:text-gray-900">
+                                <i class="fas fa-envelope text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Team Member 2 -->
+                    <div class="text-center">
+                        <div class="relative mb-4 mx-auto w-40 h-40 rounded-full overflow-hidden border-4 border-indigo-500 shadow-lg">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Team Member" class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Sarah Johnson</h3>
+                        <p class="text-indigo-600 font-medium">Lead Data Scientist</p>
+                        <p class="text-gray-600 mt-2">Specializes in predictive traffic modeling and machine learning algorithms.</p>
+                        <div class="flex justify-center mt-3 space-x-3">
+                            <a href="#" class="text-blue-500 hover:text-blue-700">
+                                <i class="fab fa-linkedin text-lg"></i>
+                            </a>
+                            <a href="#" class="text-blue-400 hover:text-blue-600">
+                                <i class="fab fa-twitter text-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-700 hover:text-gray-900">
+                                <i class="fas fa-envelope text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Team Member 3 -->
+                    <div class="text-center">
+                        <div class="relative mb-4 mx-auto w-40 h-40 rounded-full overflow-hidden border-4 border-indigo-500 shadow-lg">
+                            <img src="https://randomuser.me/api/portraits/men/62.jpg" alt="Team Member" class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Michael Chen</h3>
+                        <p class="text-indigo-600 font-medium">Frontend Developer</p>
+                        <p class="text-gray-600 mt-2">UX/UI expert focused on creating intuitive and responsive user interfaces.</p>
+                        <div class="flex justify-center mt-3 space-x-3">
+                            <a href="#" class="text-blue-500 hover:text-blue-700">
+                                <i class="fab fa-linkedin text-lg"></i>
+                            </a>
+                            <a href="#" class="text-blue-400 hover:text-blue-600">
+                                <i class="fab fa-twitter text-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-700 hover:text-gray-900">
+                                <i class="fas fa-envelope text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Team Member 4 -->
+                    <div class="text-center">
+                        <div class="relative mb-4 mx-auto w-40 h-40 rounded-full overflow-hidden border-4 border-indigo-500 shadow-lg">
+                            <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Team Member" class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Emily Rodriguez</h3>
+                        <p class="text-indigo-600 font-medium">Customer Relations</p>
+                        <p class="text-gray-600 mt-2">Ensures our system meets the specific needs of each traffic department we serve.</p>
+                        <div class="flex justify-center mt-3 space-x-3">
+                            <a href="#" class="text-blue-500 hover:text-blue-700">
+                                <i class="fab fa-linkedin text-lg"></i>
+                            </a>
+                            <a href="#" class="text-blue-400 hover:text-blue-600">
+                                <i class="fab fa-twitter text-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-700 hover:text-gray-900">
+                                <i class="fas fa-envelope text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">
+                <i class="fas fa-envelope mr-2 text-indigo-600"></i>Get In Touch
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <p class="text-gray-700 mb-4">
+                        Interested in learning more about our Traffic Management System? We'd love to hear from you! Fill out the form or use one of the contact methods below to get in touch with our team.
+                    </p>
+                    <div class="space-y-4 mt-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-indigo-100 text-indigo-600 mr-4">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800">Our Office</h4>
+                                <p class="text-gray-600">123 Traffic Way, Suite 400<br>Innovation City, TC 98765</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-indigo-100 text-indigo-600 mr-4">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800">Phone</h4>
+                                <p class="text-gray-600">+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-indigo-100 text-indigo-600 mr-4">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800">Email</h4>
+                                <p class="text-gray-600">info@trafficmanagementsystem.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <form class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                                <input type="text" id="name" name="name" class="form-input w-full rounded-md" placeholder="Your name">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" id="email" name="email" class="form-input w-full rounded-md" placeholder="Your email">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                            <input type="text" id="subject" name="subject" class="form-input w-full rounded-md" placeholder="Subject">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <textarea id="message" name="message" rows="4" class="form-input w-full rounded-md" placeholder="Your message"></textarea>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn-primary w-full">
+                                <i class="fas fa-paper-plane mr-2"></i>Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/incidents.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        // Mobile sidebar toggle
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
+        // Dropdown toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listener to dropdown buttons
+            const dropdownButtons = document.querySelectorAll('.dropdown button');
+            dropdownButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const dropdownContent = this.nextElementSibling;
+                    dropdownContent.classList.toggle('hidden');
+                });
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                dropdownButtons.forEach(button => {
+                    if (!button.contains(e.target)) {
+                        const dropdownContent = button.nextElementSibling;
+                        if (!dropdownContent.classList.contains('hidden')) {
+                            dropdownContent.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+
+            // Any about page specific JavaScript can go here
+        });
+    </script>
+</body>
+</html> 

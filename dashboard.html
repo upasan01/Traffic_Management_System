@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Management Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <script>
+        // Check if user is logged in
+        if (!localStorage.getItem('isLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Check authentication when page loads
+        checkAuth();
+    </script>
+    <!-- Sidebar -->
+    <div class="sidebar fixed inset-y-0 left-0 w-64 bg-indigo-600 text-white transform transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between p-4">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-traffic-light text-2xl"></i>
+                <span class="text-xl font-bold">Traffic Control</span>
+            </div>
+            <button id="sidebarToggle" class="md:hidden">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="mt-8">
+            <a href="#" class="sidebar-item active flex items-center space-x-3">
+                <i class="fas fa-home w-6"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="drivers.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-id-card w-6"></i>
+                <span>Drivers</span>
+            </a>
+            <a href="analytics.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-chart-line w-6"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="personnel.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-users w-6"></i>
+                <span>Personnel</span>
+            </a>
+            <a href="settings.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-cog w-6"></i>
+                <span>Settings</span>
+            </a>
+            <a href="about.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-info-circle w-6"></i>
+                <span>About Us</span>
+            </a>
+        </nav>
+        
+        <!-- User Profile Section -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-indigo-700">
+            <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                    <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Profile Picture" class="w-10 h-10 rounded-full border-2 border-white">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">John Anderson</p>
+                    <p class="text-xs text-indigo-200 truncate">Traffic Controller</p>
+                </div>
+                <div>
+                    <button class="text-white hover:text-indigo-200 transition-colors" id="userMenuButton">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div id="userMenu" class="absolute bottom-20 right-4 w-48 bg-white rounded-lg shadow-lg hidden z-50">
+                        <ul class="py-1 text-sm text-gray-700">
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-user mr-2"></i>View Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="settings.html" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-cog mr-2"></i>Account Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="logout(); return false;" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Sign Out
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Dashboard Overview</h1>
+            <div class="flex items-center space-x-4">
+                <button id="headerAddIncidentBtn" class="btn-primary flex items-center space-x-2">
+                    <i class="fas fa-plus"></i>
+                    <span>New Incident</span>
+                </button>
+                <div class="relative">
+                    <button class="notification-btn flex items-center space-x-2 text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="dashboard-card p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-gray-500 text-sm">Total Incidents</h3>
+                        <div class="flex items-center">
+                            <span id="totalIncidentsCount" class="text-2xl font-semibold text-gray-800">5</span>
+                            <span class="text-green-600 text-sm ml-2 bg-green-100 px-2 py-0.5 rounded">
+                                <i class="fas fa-arrow-up mr-1"></i>10%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-red-100 text-red-600">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-gray-500 text-sm">Active Incidents</h3>
+                        <div class="flex items-center">
+                            <span id="activeIncidentsCount" class="text-2xl font-semibold text-gray-800">2</span>
+                            <span class="text-red-600 text-sm ml-2 bg-red-100 px-2 py-0.5 rounded">
+                                <i class="fas fa-arrow-up mr-1"></i>15%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-gray-500 text-sm">Resolved Incidents</h3>
+                        <div class="flex items-center">
+                            <span id="resolvedIncidentsCount" class="text-2xl font-semibold text-gray-800">1</span>
+                            <span class="text-green-600 text-sm ml-2 bg-green-100 px-2 py-0.5 rounded">
+                                <i class="fas fa-arrow-up mr-1"></i>5%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-gray-500 text-sm">Avg. Response Time</h3>
+                        <div class="flex items-center">
+                            <span class="text-2xl font-semibold text-gray-800">8.5 min</span>
+                            <span class="text-green-600 text-sm ml-2 bg-green-100 px-2 py-0.5 rounded">
+                                <i class="fas fa-arrow-down mr-1"></i>3%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="chart-container">
+                <canvas id="typeChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="statusChart"></canvas>
+            </div>
+            <div class="chart-container lg:col-span-2">
+                <canvas id="hourlyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Incidents Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4 sm:mb-0">
+                    <i class="fas fa-car-crash mr-2 text-indigo-600"></i>Incident Management
+                </h2>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="dropdown relative inline-block">
+                        <button class="btn-secondary" id="dataManagementBtn">
+                            <i class="fas fa-database mr-2"></i>Data Options
+                            <i class="fas fa-chevron-down ml-2"></i>
+                        </button>
+                        <div class="dropdown-content hidden absolute right-0 mt-2 w-56 bg-white shadow-lg rounded-md overflow-hidden z-10 border border-gray-200">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" onclick="window.resetIncidents()">
+                                <i class="fas fa-sync-alt mr-2 text-blue-500"></i>Reset to Demo Data
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" onclick="window.clearAllIncidents()">
+                                <i class="fas fa-trash-alt mr-2 text-red-500"></i>Clear All Incidents
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" onclick="window.exportIncidentsToCSV()">
+                                <i class="fas fa-file-export mr-2 text-green-500"></i>Export CSV
+                            </a>
+                            <div class="border-t border-gray-200 my-1"></div>
+                            <div class="px-4 py-2 text-xs text-gray-500">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Data is stored locally in your browser
+                            </div>
+                        </div>
+                    </div>
+                    <button id="addIncidentBtn" class="btn-primary">
+                        <i class="fas fa-plus mr-2"></i>Add Incident
+                    </button>
+                </div>
+            </div>
+
+            <!-- User Guide Section -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-md">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 pt-0.5">
+                        <i class="fas fa-info-circle text-blue-600 text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-md font-medium text-blue-800">How to use Incident Management</h3>
+                        <div class="mt-2 text-sm text-blue-700 space-y-1">
+                            <p><strong>Adding a new incident:</strong> Click the "Add Incident" button and fill in all fields in the form.</p>
+                            <p><strong>Editing incidents:</strong> Click the <i class="fas fa-edit"></i> icon next to any incident to modify its details.</p>
+                            <p><strong>Deleting incidents:</strong> Click the <i class="fas fa-trash-alt"></i> icon to remove an incident from the system.</p>
+                            <p><strong>Filtering and searching:</strong> Use the filters above the table to find specific incidents.</p>
+                            <p><strong>Data persistence:</strong> Your incidents are automatically saved in your browser's storage.</p>
+                        </div>
+                        <button id="hideGuideBtn" class="mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium focus:outline-none">
+                            <i class="fas fa-times-circle mr-1"></i>Hide this guide
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <!-- Search -->
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Search incidents..." 
+                        class="form-input w-full pl-10 focus:ring-indigo-500 focus:border-indigo-500">
+                    <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                
+                <!-- Status Filter -->
+                <div class="relative">
+                    <select id="statusFilter" class="form-input w-full pl-10 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="all">All Statuses</option>
+                        <option value="Active">Active</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                    <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="fas fa-filter"></i>
+                    </div>
+                </div>
+                
+                <!-- Type Filter -->
+                <div class="relative">
+                    <select id="typeFilter" class="form-input w-full pl-10 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="all">All Types</option>
+                        <!-- Will be populated dynamically -->
+                    </select>
+                    <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                </div>
+                
+                <!-- Sort Options -->
+                <div class="relative">
+                    <select id="sortOption" class="form-input w-full pl-10 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="name_asc">Name (A-Z)</option>
+                        <option value="name_desc">Name (Z-A)</option>
+                    </select>
+                    <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="fas fa-sort"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-hidden rounded-lg border border-gray-200">
+                <table id="incidentsTable" class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Victim</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="incidentsTableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Table rows will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Incident Modal -->
+    <div id="incidentModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+        <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl transform transition-all duration-300 ease-in-out opacity-0 translate-y-4">
+            <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+                <h3 id="modalTitle" class="text-xl font-semibold text-gray-800">Add New Incident</h3>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="incidentForm" class="p-6">
+                <!-- Hidden field for incident ID when editing -->
+                <input type="hidden" id="incidentId" name="incidentId">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="form-group">
+                        <label for="victimName" class="block text-sm font-medium text-gray-700 mb-1">Victim Name</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-user text-gray-400"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="victimName" 
+                                name="victimName" 
+                                class="form-input pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+                                placeholder="Enter victim name" 
+                                required
+                            >
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="incidentType" class="block text-sm font-medium text-gray-700 mb-1">Incident Type</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-tag text-gray-400"></i>
+                            </div>
+                            <select 
+                                id="incidentType" 
+                                name="incidentType" 
+                                class="form-input pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+                                required
+                            >
+                                <option value="">Select type</option>
+                                <option value="Accident">Accident</option>
+                                <option value="Traffic Jam">Traffic Jam</option>
+                                <option value="Road Block">Road Block</option>
+                                <option value="Weather">Weather</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-map-marker-alt text-gray-400"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="location" 
+                                name="location" 
+                                class="form-input pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+                                placeholder="Enter location" 
+                                required
+                            >
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-flag text-gray-400"></i>
+                            </div>
+                            <select 
+                                id="status" 
+                                name="status" 
+                                class="form-input pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+                                required
+                            >
+                                <option value="">Select status</option>
+                                <option value="Active">Active</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Resolved">Resolved</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group mb-6">
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <div class="relative">
+                        <div class="absolute top-3 left-3 flex items-start pointer-events-none">
+                            <i class="fas fa-align-left text-gray-400"></i>
+                        </div>
+                        <textarea 
+                            id="description" 
+                            name="description" 
+                            rows="4" 
+                            class="form-input pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+                            placeholder="Enter incident description" 
+                            required
+                        ></textarea>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancelBtn" class="px-4 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        <i class="fas fa-times mr-2"></i>Cancel
+                    </button>
+                    <button type="submit" id="submitIncidentBtn" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <i class="fas fa-save mr-2"></i>Add Incident
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/incidents.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/dashboard.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM fully loaded - setting up modal functionality");
+            
+            // DIRECT MODAL FUNCTIONALITY - not dependent on incidents.js
+            // This ensures the modal works even if incidents.js has issues
+            
+            // Global variables
+            window.incidents = window.incidents || (localStorage.getItem('trafficIncidents') ? 
+                JSON.parse(localStorage.getItem('trafficIncidents')) : []);
+            window.isEditing = false;
+            window.currentIncidentId = null;
+                
+            // Function to open modal
+            function directOpenModal() {
+                console.log("Direct open modal called");
+                const modal = document.getElementById('incidentModal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    
+                    const modalContent = modal.querySelector('.modal-content');
+                    if (modalContent) {
+                        setTimeout(() => {
+                            modalContent.classList.remove('opacity-0', 'translate-y-4');
+                            modalContent.classList.add('opacity-100', 'translate-y-0');
+                        }, 10);
+                    }
+                } else {
+                    console.error("Modal not found!");
+                }
+            }
+            
+            // Function to close modal
+            function directCloseModal() {
+                console.log("Direct close modal called");
+                const modal = document.getElementById('incidentModal');
+                if (modal) {
+                    const modalContent = modal.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.classList.remove('opacity-100', 'translate-y-0');
+                        modalContent.classList.add('opacity-0', 'translate-y-4');
+                        
+                        setTimeout(() => {
+                            modal.classList.remove('flex');
+                            modal.classList.add('hidden');
+                        }, 300);
+                    } else {
+                        modal.classList.remove('flex');
+                        modal.classList.add('hidden');
+                    }
+                }
+            }
+            
+            // Function to render incidents to the table
+            function renderIncidents(incidentsToRender) {
+                console.log("Rendering incidents:", incidentsToRender);
+                const tableBody = document.getElementById('incidentsTableBody');
+                if (!tableBody) {
+                    console.error("Table body not found!");
+                    return;
+                }
+                
+                // Clear the table
+                tableBody.innerHTML = '';
+                
+                // Add each incident to the table
+                incidentsToRender.forEach(incident => {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-gray-50';
+                    
+                    // Format the status with color
+                    const statusClass = incident.status === 'Active' ? 'bg-red-100 text-red-800' : 
+                                       incident.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 
+                                       'bg-green-100 text-green-800';
+                    
+                    row.innerHTML = `
+                        <td class="px-4 py-3 text-sm">${incident.victim_name}</td>
+                        <td class="px-4 py-3 text-sm">${incident.type}</td>
+                        <td class="px-4 py-3 text-sm">${incident.location}</td>
+                        <td class="px-4 py-3 text-sm">
+                            <span class="px-2 py-1 rounded-full text-xs font-medium ${statusClass}">
+                                ${incident.status}
+                            </span>
+                        </td>
+                        <td class="px-4 py-3 text-sm">${incident.description.substring(0, 50)}${incident.description.length > 50 ? '...' : ''}</td>
+                        <td class="px-4 py-3 text-sm">${incident.created_at}</td>
+                        <td class="px-4 py-3 text-sm">
+                            <div class="flex space-x-2">
+                                <button onclick="editIncident(${incident.id})" class="action-btn text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteIncident(${incident.id})" class="action-btn text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    
+                    tableBody.appendChild(row);
+                });
+                
+                // Update counter displays
+                updateCounters();
+            }
+            
+            // Function to handle form submission
+            function handleFormSubmit(e) {
+                e.preventDefault();
+                console.log("Form submitted");
+                
+                const form = document.getElementById('incidentForm');
+                const formData = new FormData(form);
+                
+                // Gather form data
+                const incidentData = {
+                    victim_name: formData.get('victimName'),
+                    type: formData.get('incidentType'),
+                    location: formData.get('location'),
+                    status: formData.get('status'),
+                    description: formData.get('description')
+                };
+                
+                if (window.isEditing && window.currentIncidentId) {
+                    // Update existing incident
+                    const index = window.incidents.findIndex(inc => inc.id === window.currentIncidentId);
+                    if (index !== -1) {
+                        incidentData.id = window.currentIncidentId;
+                        incidentData.created_at = window.incidents[index].created_at;
+                        window.incidents[index] = incidentData;
+                        showNotification("Incident updated successfully", "success");
+                    }
+                } else {
+                    // Add new incident
+                    const newId = window.incidents.length > 0 ? 
+                        Math.max(...window.incidents.map(inc => inc.id)) + 1 : 1;
+                    
+                    const newIncident = {
+                        ...incidentData,
+                        id: newId,
+                        created_at: new Date().toISOString().replace('T', ' ').substring(0, 19)
+                    };
+                    
+                    window.incidents.unshift(newIncident);
+                    showNotification("New incident added successfully", "success");
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('trafficIncidents', JSON.stringify(window.incidents));
+                
+                // Close modal
+                directCloseModal();
+                
+                // Render updated table
+                renderIncidents(window.incidents);
+                
+                // Reset the form
+                form.reset();
+            }
+            
+            // Function to edit an incident
+            function editIncident(id) {
+                console.log("Edit incident:", id);
+                window.isEditing = true;
+                window.currentIncidentId = id;
+                
+                const incident = window.incidents.find(inc => inc.id === id);
+                if (!incident) {
+                    console.error("Incident not found:", id);
+                    return;
+                }
+                
+                // Open modal
+                directOpenModal();
+                
+                // Set modal title
+                const modalTitle = document.getElementById('modalTitle');
+                if (modalTitle) modalTitle.textContent = 'Edit Incident';
+                
+                // Set submit button text
+                const submitBtn = document.getElementById('submitIncidentBtn');
+                if (submitBtn) submitBtn.textContent = 'Update Incident';
+                
+                // Populate form
+                document.getElementById('victimName').value = incident.victim_name;
+                document.getElementById('incidentType').value = incident.type;
+                document.getElementById('location').value = incident.location;
+                document.getElementById('status').value = incident.status;
+                document.getElementById('description').value = incident.description;
+            }
+            
+            // Function to delete an incident
+            function deleteIncident(id) {
+                console.log("Delete incident:", id);
+                if (!confirm('Are you sure you want to delete this incident?')) return;
+                
+                const index = window.incidents.findIndex(inc => inc.id === id);
+                if (index !== -1) {
+                    window.incidents.splice(index, 1);
+                    localStorage.setItem('trafficIncidents', JSON.stringify(window.incidents));
+                    renderIncidents(window.incidents);
+                    showNotification("Incident deleted successfully", "success");
+                }
+            }
+            
+            // Function to update counters
+            function updateCounters() {
+                const totalCounter = document.getElementById('totalIncidentsCount');
+                if (totalCounter) totalCounter.textContent = window.incidents.length;
+                
+                const activeCounter = document.getElementById('activeIncidentsCount');
+                if (activeCounter) {
+                    const activeCount = window.incidents.filter(inc => inc.status === 'Active').length;
+                    activeCounter.textContent = activeCount;
+                }
+                
+                const resolvedCounter = document.getElementById('resolvedIncidentsCount');
+                if (resolvedCounter) {
+                    const resolvedCount = window.incidents.filter(inc => inc.status === 'Resolved').length;
+                    resolvedCounter.textContent = resolvedCount;
+                }
+            }
+            
+            // Function to show notifications
+            function showNotification(message, type) {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-500 ease-in-out translate-x-full`;
+                
+                // Set notification style based on type
+                switch(type) {
+                    case 'success':
+                        notification.classList.add('bg-green-100', 'text-green-800', 'border-l-4', 'border-green-500');
+                        break;
+                    case 'danger':
+                        notification.classList.add('bg-red-100', 'text-red-800', 'border-l-4', 'border-red-500');
+                        break;
+                    case 'warning':
+                        notification.classList.add('bg-yellow-100', 'text-yellow-800', 'border-l-4', 'border-yellow-500');
+                        break;
+                    default:
+                        notification.classList.add('bg-blue-100', 'text-blue-800', 'border-l-4', 'border-blue-500');
+                }
+                
+                // Add content
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'danger' ? 'exclamation-circle' : 'info-circle'} mr-2"></i>
+                        </div>
+                        <div>${message}</div>
+                    </div>
+                `;
+                
+                // Add to document
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.classList.remove('translate-x-full');
+                    notification.classList.add('translate-x-0');
+                }, 10);
+                
+                // Remove after delay
+                setTimeout(() => {
+                    notification.classList.remove('translate-x-0');
+                    notification.classList.add('translate-x-full');
+                    
+                    // Remove from DOM after animation
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 500);
+                }, 3000);
+            }
+            
+            // Expose these functions globally
+            window.directOpenModal = directOpenModal;
+            window.directCloseModal = directCloseModal;
+            window.editIncident = editIncident;
+            window.deleteIncident = deleteIncident;
+            window.renderIncidents = renderIncidents;
+            
+            // Add form submit event listener
+            const incidentForm = document.getElementById('incidentForm');
+            if (incidentForm) {
+                incidentForm.addEventListener('submit', handleFormSubmit);
+                console.log("Form submit handler attached");
+            } else {
+                console.error("Incident form not found!");
+            }
+            
+            // Add direct event listeners to buttons
+            const headerAddIncidentBtn = document.getElementById('headerAddIncidentBtn');
+            if (headerAddIncidentBtn) {
+                headerAddIncidentBtn.addEventListener('click', function() {
+                    console.log("Header add incident button clicked");
+                    // Reset form for new incident
+                    window.isEditing = false;
+                    window.currentIncidentId = null;
+                    
+                    // Reset form if it exists
+                    const form = document.getElementById('incidentForm');
+                    if (form) form.reset();
+                    
+                    // Update modal title
+                    const modalTitle = document.getElementById('modalTitle');
+                    if (modalTitle) modalTitle.textContent = 'Add New Incident';
+                    
+                    // Update button text
+                    const submitBtn = document.getElementById('submitIncidentBtn');
+                    if (submitBtn) submitBtn.textContent = 'Add Incident';
+                    
+                    directOpenModal();
+                });
+            }
+            
+            const addIncidentBtn = document.getElementById('addIncidentBtn');
+            if (addIncidentBtn) {
+                addIncidentBtn.addEventListener('click', function() {
+                    console.log("Add incident button clicked");
+                    // Reset form for new incident
+                    window.isEditing = false;
+                    window.currentIncidentId = null;
+                    
+                    // Reset form if it exists
+                    const form = document.getElementById('incidentForm');
+                    if (form) form.reset();
+                    
+                    // Update modal title
+                    const modalTitle = document.getElementById('modalTitle');
+                    if (modalTitle) modalTitle.textContent = 'Add New Incident';
+                    
+                    // Update button text
+                    const submitBtn = document.getElementById('submitIncidentBtn');
+                    if (submitBtn) submitBtn.textContent = 'Add Incident';
+                    
+                    directOpenModal();
+                });
+            }
+            
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', function() {
+                    console.log("Close modal button clicked");
+                    directCloseModal();
+                });
+            }
+            
+            const cancelBtn = document.getElementById('cancelBtn');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    console.log("Cancel button clicked");
+                    directCloseModal();
+                });
+            }
+            
+            // Click outside modal to close
+            const incidentModal = document.getElementById('incidentModal');
+            if (incidentModal) {
+                incidentModal.addEventListener('click', function(e) {
+                    if (e.target === incidentModal) {
+                        console.log("Clicked outside modal");
+                        directCloseModal();
+                    }
+                });
+            }
+            
+            // Data management buttons
+            window.resetIncidents = function() {
+                if (confirm('Are you sure you want to reset to default data?')) {
+                    // Demo data
+                    const demoIncidents = [
+                        {
+                            id: 1,
+                            victim_name: "John Smith",
+                            type: "Accident",
+                            location: "Main St & 5th Ave",
+                            status: "Active",
+                            description: "Two-vehicle collision with minor injuries",
+                            created_at: "2023-06-15 08:30:45"
+                        },
+                        {
+                            id: 2,
+                            victim_name: "Mary Johnson",
+                            type: "Traffic Jam",
+                            location: "Highway 101, Mile 24",
+                            status: "Pending",
+                            description: "Major traffic congestion due to construction",
+                            created_at: "2023-06-14 17:15:22"
+                        },
+                        {
+                            id: 3,
+                            victim_name: "Robert Davis",
+                            type: "Road Block",
+                            location: "Elm Street",
+                            status: "Resolved",
+                            description: "Fallen tree blocking northbound lanes",
+                            created_at: "2023-06-13 11:45:30"
+                        },
+                        {
+                            id: 4,
+                            victim_name: "Sarah Wilson",
+                            type: "Accident",
+                            location: "Park Ave & 3rd St",
+                            status: "Active",
+                            description: "Pedestrian struck by vehicle, serious injuries",
+                            created_at: "2023-06-15 14:22:18"
+                        },
+                        {
+                            id: 5,
+                            victim_name: "Michael Brown",
+                            type: "Weather",
+                            location: "Downtown Area",
+                            status: "Pending",
+                            description: "Flooding causing multiple road closures",
+                            created_at: "2023-06-14 09:10:05"
+                        }
+                    ];
+                    
+                    window.incidents = [...demoIncidents];
+                    localStorage.setItem('trafficIncidents', JSON.stringify(window.incidents));
+                    renderIncidents(window.incidents);
+                    showNotification("Reset to default data complete", "info");
+                }
+            };
+            
+            window.clearAllIncidents = function() {
+                if (confirm('Are you sure you want to clear all incidents?')) {
+                    window.incidents = [];
+                    localStorage.setItem('trafficIncidents', JSON.stringify(window.incidents));
+                    renderIncidents(window.incidents);
+                    showNotification("All incidents cleared", "warning");
+                }
+            };
+            
+            window.exportIncidentsToCSV = function() {
+                let csvContent = "ID,Victim Name,Type,Location,Status,Description,Created At\n";
+                
+                window.incidents.forEach(incident => {
+                    csvContent += `${incident.id},"${incident.victim_name}","${incident.type}","${incident.location}","${incident.status}","${incident.description}","${incident.created_at}"\n`;
+                });
+                
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.setAttribute('href', url);
+                a.setAttribute('download', 'incidents.csv');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                showNotification("Incidents exported to CSV", "success");
+            };
+            
+            const resetIncidentsBtn = document.getElementById('resetIncidentsBtn');
+            if (resetIncidentsBtn) {
+                resetIncidentsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.resetIncidents();
+                });
+            }
+            
+            const clearAllIncidentsBtn = document.getElementById('clearAllIncidentsBtn');
+            if (clearAllIncidentsBtn) {
+                clearAllIncidentsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.clearAllIncidents();
+                });
+            }
+            
+            const exportIncidentsBtn = document.getElementById('exportIncidentsBtn');
+            if (exportIncidentsBtn) {
+                exportIncidentsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.exportIncidentsToCSV();
+                });
+            }
+            
+            // Sidebar toggle for mobile
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    const sidebar = document.querySelector('.sidebar');
+                    sidebar.classList.toggle('-translate-x-full');
+                });
+            }
+            
+            // User Profile Menu Toggle
+            const userMenuButton = document.getElementById('userMenuButton');
+            const userMenu = document.getElementById('userMenu');
+            
+            if (userMenuButton && userMenu) {
+                userMenuButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userMenu.classList.toggle('hidden');
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function() {
+                    if (!userMenu.classList.contains('hidden')) {
+                        userMenu.classList.add('hidden');
+                    }
+                });
+                
+                // Prevent menu from closing when clicking inside
+                userMenu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            
+            // Data Management Dropdown
+            const dataManagementBtn = document.getElementById('dataManagementBtn');
+            const dropdownContent = document.querySelector('.dropdown-content');
+            
+            if (dataManagementBtn && dropdownContent) {
+                dataManagementBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dropdownContent.classList.toggle('hidden');
+                });
+                
+                document.addEventListener('click', function() {
+                    if (!dropdownContent.classList.contains('hidden')) {
+                        dropdownContent.classList.add('hidden');
+                    }
+                });
+                
+                dropdownContent.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            
+            // Initial load of incidents
+            renderIncidents(window.incidents);
+            
+            // Set up demo notification trigger for testing
+            setTimeout(() => {
+                // Create a test notification after page load
+                showNotification(
+                    "Incident Management Ready", 
+                    "info"
+                );
+            }, 1000);
+        });
+    </script>
+</body>
+</html> 

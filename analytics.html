@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Analytics Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Sidebar -->
+    <div class="sidebar fixed inset-y-0 left-0 w-64 bg-indigo-600 text-white transform transition-transform duration-300 ease-in-out z-30 md:translate-x-0" id="sidebar">
+        <div class="flex items-center justify-between p-4">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-traffic-light text-2xl"></i>
+                <span class="text-xl font-bold">Traffic Control</span>
+            </div>
+            <button id="sidebarToggle" class="md:hidden">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="mt-8">
+            <a href="index.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-home w-6"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="incidents.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-exclamation-triangle w-6"></i>
+                <span>Incidents</span>
+            </a>
+            <a href="analytics.html" class="sidebar-item active flex items-center space-x-3">
+                <i class="fas fa-chart-line w-6"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-users w-6"></i>
+                <span>Personnel</span>
+            </a>
+            <a href="settings.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-cog w-6"></i>
+                <span>Settings</span>
+            </a>
+            <a href="about.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-info-circle w-6"></i>
+                <span>About Us</span>
+            </a>
+        </nav>
+        
+        <!-- User Profile Section -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-indigo-700">
+            <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                    <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Profile Picture" class="w-10 h-10 rounded-full border-2 border-white">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">John Anderson</p>
+                    <p class="text-xs text-indigo-200 truncate">Traffic Controller</p>
+                </div>
+                <div>
+                    <button class="text-white hover:text-indigo-200 transition-colors" id="userMenuButton">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div id="userMenu" class="absolute bottom-20 right-4 w-48 bg-white rounded-lg shadow-lg hidden z-50">
+                        <ul class="py-1 text-sm text-gray-700">
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-user mr-2"></i>View Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="settings.html" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-cog mr-2"></i>Account Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="login.html" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Sign Out
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-0 md:ml-64 p-4 md:p-8 transition-all duration-300" id="mainContent">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div class="flex items-center mb-4 md:mb-0">
+                <button id="mobileSidebarToggle" class="mr-4 md:hidden text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Traffic Analytics</h1>
+            </div>
+            <div class="flex flex-col md:flex-row items-stretch md:items-center space-y-2 md:space-y-0 md:space-x-4 w-full md:w-auto">
+                <div class="relative">
+                    <select id="timeRange" class="form-input w-full md:w-auto">
+                        <option value="day">Last 24 Hours</option>
+                        <option value="week">Last 7 Days</option>
+                        <option value="month">Last 30 Days</option>
+                        <option value="year">Last Year</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="btn-primary flex items-center justify-center space-x-2">
+                        <i class="fas fa-download"></i>
+                        <span>Export Report</span>
+                    </button>
+                    <div class="relative">
+                        <button class="notification-btn flex items-center space-x-2 text-gray-600 hover:text-gray-800">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-count bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">3</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+            <div class="dashboard-card p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Traffic Volume</p>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800" id="trafficVolume">12,456</h2>
+                        <p class="text-green-500 text-sm mt-1">
+                            <i class="fas fa-arrow-up"></i> 12% from last week
+                        </p>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-car text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Average Speed</p>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800" id="avgSpeed">45 km/h</h2>
+                        <p class="text-red-500 text-sm mt-1">
+                            <i class="fas fa-arrow-down"></i> 5% from last week
+                        </p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-tachometer-alt text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Congestion Level</p>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800" id="congestionLevel">Medium</h2>
+                        <p class="text-yellow-500 text-sm mt-1">
+                            <i class="fas fa-equals"></i> Same as last week
+                        </p>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-traffic-light text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Response Time</p>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800" id="responseTime">8.5 min</h2>
+                        <p class="text-green-500 text-sm mt-1">
+                            <i class="fas fa-arrow-up"></i> 15% improvement
+                        </p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-stopwatch text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-8">
+            <!-- Traffic Flow Chart -->
+            <div class="chart-container">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">Traffic Flow Analysis</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="px-3 py-1 text-sm bg-indigo-100 text-indigo-600 rounded-full">Vehicles</button>
+                        <button class="px-3 py-1 text-sm bg-gray-100 text-gray-600 rounded-full">Pedestrians</button>
+                    </div>
+                </div>
+                <div style="height: 250px; position: relative;">
+                    <canvas id="trafficFlowChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Incident Distribution -->
+            <div class="chart-container">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">Incident Distribution</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="px-3 py-1 text-sm bg-indigo-100 text-indigo-600 rounded-full">By Type</button>
+                        <button class="px-3 py-1 text-sm bg-gray-100 text-gray-600 rounded-full">By Severity</button>
+                    </div>
+                </div>
+                <div style="height: 250px; position: relative;">
+                    <canvas id="incidentDistributionChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Traffic by Time of Day -->
+            <div class="chart-container">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">Traffic by Time of Day</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="px-3 py-1 text-sm bg-indigo-100 text-indigo-600 rounded-full">Weekday</button>
+                        <button class="px-3 py-1 text-sm bg-gray-100 text-gray-600 rounded-full">Weekend</button>
+                    </div>
+                </div>
+                <div style="height: 250px; position: relative;">
+                    <canvas id="trafficByTimeChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Road Segment Comparison -->
+            <div class="chart-container">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">Road Segment Comparison</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="px-3 py-1 text-sm bg-indigo-100 text-indigo-600 rounded-full">Volume</button>
+                        <button class="px-3 py-1 text-sm bg-gray-100 text-gray-600 rounded-full">Speed</button>
+                    </div>
+                </div>
+                <div style="height: 250px; position: relative;">
+                    <canvas id="roadSegmentChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Analytics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <!-- Peak Hours -->
+            <div class="chart-container">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Peak Hours Analysis</h3>
+                <div style="height: 220px; position: relative;">
+                    <canvas id="peakHoursChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Weather Impact -->
+            <div class="chart-container">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Weather Impact</h3>
+                <div style="height: 220px; position: relative;">
+                    <canvas id="weatherImpactChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Response Time Trend -->
+            <div class="chart-container">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Response Time Trend</h3>
+                <div style="height: 220px; position: relative;">
+                    <canvas id="responseTimeChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Traffic Patterns by Day -->
+        <div class="chart-container mt-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">Weekly Traffic Patterns</h3>
+                <div class="flex flex-wrap gap-2">
+                    <button class="px-3 py-1 text-sm bg-indigo-100 text-indigo-600 rounded-full">Current Week</button>
+                    <button class="px-3 py-1 text-sm bg-gray-100 text-gray-600 rounded-full">Previous Week</button>
+                </div>
+            </div>
+            <div style="height: 250px; position: relative;">
+                <canvas id="weeklyPatternChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Test notification after page load
+            setTimeout(() => {
+                if (typeof addNotification === 'function') {
+                    addNotification(
+                        "Analytics Update", 
+                        "Traffic data refreshed with latest information", 
+                        "info"
+                    );
+                }
+            }, 2000);
+            
+            // Mobile sidebar toggle
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+            
+            function toggleSidebar() {
+                sidebar.classList.toggle('-translate-x-full');
+                sidebar.classList.toggle('translate-x-0');
+                
+                if (window.innerWidth < 768) {
+                    if (sidebar.classList.contains('translate-x-0')) {
+                        mainContent.classList.add('ml-0');
+                    } else {
+                        mainContent.classList.remove('ml-0');
+                    }
+                }
+            }
+            
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', toggleSidebar);
+            }
+            
+            if (mobileSidebarToggle) {
+                mobileSidebarToggle.addEventListener('click', toggleSidebar);
+            }
+            
+            // User Profile Menu Toggle
+            const userMenuButton = document.getElementById('userMenuButton');
+            const userMenu = document.getElementById('userMenu');
+            
+            if (userMenuButton && userMenu) {
+                userMenuButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userMenu.classList.toggle('hidden');
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function() {
+                    if (!userMenu.classList.contains('hidden')) {
+                        userMenu.classList.add('hidden');
+                    }
+                });
+                
+                // Prevent menu from closing when clicking inside
+                userMenu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            
+            // Hide sidebar by default on mobile
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('translate-x-0');
+            }
+            
+            // Demo data for Traffic Flow Analysis
+            const trafficFlowChart = new Chart(document.getElementById('trafficFlowChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: ['6AM', '8AM', '10AM', '12PM', '2PM', '4PM', '6PM', '8PM', '10PM'],
+                    datasets: [{
+                        label: 'Vehicles/Hour',
+                        data: [450, 750, 620, 580, 610, 780, 850, 580, 320],
+                        borderColor: '#4f46e5',
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Vehicles per Hour'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Demo data for Incident Distribution
+            const incidentDistributionChart = new Chart(document.getElementById('incidentDistributionChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Accidents', 'Traffic Jams', 'Road Blocks', 'Weather'],
+                    datasets: [{
+                        data: [35, 28, 15, 22],
+                        backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#10b981'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+
+            // Demo data for Traffic by Time of Day
+            const trafficByTimeChart = new Chart(document.getElementById('trafficByTimeChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['12AM', '3AM', '6AM', '9AM', '12PM', '3PM', '6PM', '9PM'],
+                    datasets: [{
+                        label: 'Volume',
+                        data: [120, 80, 420, 780, 650, 710, 820, 380],
+                        backgroundColor: 'rgba(79, 70, 229, 0.7)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Traffic Volume'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Demo data for Road Segment Comparison
+            const roadSegmentChart = new Chart(document.getElementById('roadSegmentChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Main St', 'Highway 1', 'Downtown', 'Bridge Rd', 'Park Ave'],
+                    datasets: [{
+                        label: 'Average Traffic Volume',
+                        data: [620, 920, 710, 530, 480],
+                        backgroundColor: 'rgba(79, 70, 229, 0.7)',
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Demo data for Peak Hours Analysis
+            const peakHoursChart = new Chart(document.getElementById('peakHoursChart').getContext('2d'), {
+                type: 'radar',
+                data: {
+                    labels: ['6AM', '8AM', '10AM', '12PM', '2PM', '4PM', '6PM', '8PM'],
+                    datasets: [{
+                        label: 'Congestion Level',
+                        data: [35, 80, 60, 65, 58, 75, 90, 48],
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                        borderColor: '#4f46e5',
+                        pointBackgroundColor: '#4f46e5',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#4f46e5'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: false
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+
+            // Demo data for Weather Impact
+            const weatherImpactChart = new Chart(document.getElementById('weatherImpactChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Clear', 'Cloudy', 'Rain', 'Snow', 'Fog'],
+                    datasets: [{
+                        label: 'Avg Speed (km/h)',
+                        data: [58, 52, 40, 28, 35],
+                        backgroundColor: ['#10b981', '#60a5fa', '#3b82f6', '#f3f4f6', '#d1d5db'],
+                        borderWidth: 0,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Demo data for Response Time Trend
+            const responseTimeChart = new Chart(document.getElementById('responseTimeChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Response Time (min)',
+                        data: [12.5, 11.8, 10.2, 9.6, 8.9, 8.5],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+
+            // Demo data for Weekly Traffic Patterns
+            const weeklyPatternChart = new Chart(document.getElementById('weeklyPatternChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                    datasets: [{
+                        label: 'Morning Rush (7-9AM)',
+                        data: [780, 795, 782, 768, 752, 320, 298],
+                        borderColor: '#4f46e5',
+                        backgroundColor: 'transparent',
+                        tension: 0.3
+                    }, {
+                        label: 'Evening Rush (4-6PM)',
+                        data: [850, 832, 865, 878, 895, 380, 345],
+                        borderColor: '#ef4444',
+                        backgroundColor: 'transparent',
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Vehicles per Hour'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Update overview metrics periodically for demo effect
+            setInterval(() => {
+                // Random fluctuations in traffic volume
+                const trafficVol = Math.floor(12000 + Math.random() * 1000);
+                document.getElementById('trafficVolume').textContent = trafficVol.toLocaleString();
+                
+                // Random fluctuations in average speed
+                const speed = Math.floor(42 + Math.random() * 6);
+                document.getElementById('avgSpeed').textContent = speed + ' km/h';
+                
+                // Response time fluctuations
+                const respTime = (8 + Math.random() * 1).toFixed(1);
+                document.getElementById('responseTime').textContent = respTime + ' min';
+                
+                // Update congestion level based on traffic volume
+                const congestionEl = document.getElementById('congestionLevel');
+                if (trafficVol > 12500) {
+                    congestionEl.textContent = 'High';
+                    congestionEl.classList.remove('text-yellow-500', 'text-green-500');
+                    congestionEl.classList.add('text-red-500');
+                } else if (trafficVol > 11800) {
+                    congestionEl.textContent = 'Medium';
+                    congestionEl.classList.remove('text-red-500', 'text-green-500');
+                    congestionEl.classList.add('text-yellow-500');
+                } else {
+                    congestionEl.textContent = 'Low';
+                    congestionEl.classList.remove('text-red-500', 'text-yellow-500');
+                    congestionEl.classList.add('text-green-500');
+                }
+            }, 5000);
+            
+            // Handle window resize event to adjust charts
+            window.addEventListener('resize', function() {
+                // Check if window width changed to mobile or desktop view
+                if (window.innerWidth < 768) {
+                    if (!sidebar.classList.contains('-translate-x-full')) {
+                        sidebar.classList.add('-translate-x-full');
+                        sidebar.classList.remove('translate-x-0');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

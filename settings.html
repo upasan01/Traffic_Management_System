@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Traffic Management Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Sidebar -->
+    <div class="sidebar fixed inset-y-0 left-0 w-64 bg-indigo-600 text-white transform transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between p-4">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-traffic-light text-2xl"></i>
+                <span class="text-xl font-bold">Traffic Control</span>
+            </div>
+            <button id="sidebarToggle" class="md:hidden">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="mt-8">
+            <a href="index.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-home w-6"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="incidents.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-exclamation-triangle w-6"></i>
+                <span>Incidents</span>
+            </a>
+            <a href="analytics.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-chart-line w-6"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-users w-6"></i>
+                <span>Personnel</span>
+            </a>
+            <a href="settings.html" class="sidebar-item active flex items-center space-x-3">
+                <i class="fas fa-cog w-6"></i>
+                <span>Settings</span>
+            </a>
+            <a href="about.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-info-circle w-6"></i>
+                <span>About Us</span>
+            </a>
+        </nav>
+        
+        <!-- User Profile Section -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-indigo-700">
+            <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                    <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Profile Picture" class="w-10 h-10 rounded-full border-2 border-white">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">John Anderson</p>
+                    <p class="text-xs text-indigo-200 truncate">Traffic Controller</p>
+                </div>
+                <div>
+                    <button class="text-white hover:text-indigo-200 transition-colors" id="userMenuButton">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div id="userMenu" class="absolute bottom-20 right-4 w-48 bg-white rounded-lg shadow-lg hidden z-50">
+                        <ul class="py-1 text-sm text-gray-700">
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-user mr-2"></i>View Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="settings.html" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-cog mr-2"></i>Account Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="login.html" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Sign Out
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Settings</h1>
+            <div class="flex items-center space-x-4">
+                <button id="saveSettingsBtn" class="btn-primary flex items-center space-x-2">
+                    <i class="fas fa-save"></i>
+                    <span>Save Changes</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Settings Content -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- Navigation Sidebar -->
+            <div class="md:col-span-1">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="px-4 py-3 bg-gray-50 border-b border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-800">Settings Menu</h3>
+                    </div>
+                    <div class="divide-y divide-gray-200">
+                        <button class="w-full text-left px-4 py-3 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors settings-nav-item active" data-target="general">
+                            <i class="fas fa-sliders-h mr-2 text-indigo-500"></i>
+                            General
+                        </button>
+                        <button class="w-full text-left px-4 py-3 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors settings-nav-item" data-target="appearance">
+                            <i class="fas fa-paint-brush mr-2 text-indigo-500"></i>
+                            Appearance
+                        </button>
+                        <button class="w-full text-left px-4 py-3 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors settings-nav-item" data-target="notifications">
+                            <i class="fas fa-bell mr-2 text-indigo-500"></i>
+                            Notifications
+                        </button>
+                        <button class="w-full text-left px-4 py-3 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors settings-nav-item" data-target="data">
+                            <i class="fas fa-database mr-2 text-indigo-500"></i>
+                            Data Management
+                        </button>
+                        <button class="w-full text-left px-4 py-3 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors settings-nav-item" data-target="account">
+                            <i class="fas fa-user-circle mr-2 text-indigo-500"></i>
+                            Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Panels -->
+            <div class="md:col-span-3">
+                <!-- General Settings -->
+                <div id="general-settings" class="settings-panel active bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">General Settings</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">System Name</label>
+                            <input type="text" id="systemName" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="Traffic Management System">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Default View</label>
+                            <select id="defaultView" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                <option value="dashboard">Dashboard</option>
+                                <option value="incidents">Incidents</option>
+                                <option value="analytics">Analytics</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date Format</label>
+                            <select id="dateFormat" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Auto-refresh Dashboard</label>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="autoRefresh" class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500">
+                                <span class="ml-2 text-gray-700">Refresh every</span>
+                                <select id="refreshInterval" class="form-input mx-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-24">
+                                    <option value="30">30 sec</option>
+                                    <option value="60">1 min</option>
+                                    <option value="300">5 min</option>
+                                    <option value="600">10 min</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appearance Settings -->
+                <div id="appearance-settings" class="settings-panel hidden bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Appearance Settings</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Theme</label>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="theme-option bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-indigo-500 active">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-sm font-medium">Light</span>
+                                        <i class="fas fa-check-circle text-indigo-500"></i>
+                                    </div>
+                                    <div class="h-16 bg-gray-100 rounded-md flex flex-col">
+                                        <div class="h-4 bg-indigo-600 rounded-t-md"></div>
+                                        <div class="flex-1"></div>
+                                    </div>
+                                </div>
+                                <div class="theme-option bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-indigo-500">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-sm font-medium">Dark</span>
+                                        <i class="fas fa-check-circle text-indigo-500 opacity-0"></i>
+                                    </div>
+                                    <div class="h-16 bg-gray-800 rounded-md flex flex-col">
+                                        <div class="h-4 bg-indigo-500 rounded-t-md"></div>
+                                        <div class="flex-1"></div>
+                                    </div>
+                                </div>
+                                <div class="theme-option bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-indigo-500">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-sm font-medium">Blue</span>
+                                        <i class="fas fa-check-circle text-indigo-500 opacity-0"></i>
+                                    </div>
+                                    <div class="h-16 bg-blue-50 rounded-md flex flex-col">
+                                        <div class="h-4 bg-blue-600 rounded-t-md"></div>
+                                        <div class="flex-1"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Sidebar Position</label>
+                            <div class="flex space-x-4">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="sidebarPosition" value="left" class="form-radio text-indigo-600 focus:ring-indigo-500" checked>
+                                    <span class="ml-2">Left</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="sidebarPosition" value="right" class="form-radio text-indigo-600 focus:ring-indigo-500">
+                                    <span class="ml-2">Right</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Compact Mode</label>
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" id="compactMode" class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500">
+                                <span class="ml-2">Enable compact view for tables and lists</span>
+                            </label>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Custom Accent Color</label>
+                            <div class="flex items-center space-x-3">
+                                <input type="color" id="accentColor" value="#4f46e5" class="w-12 h-10 p-0 border-0 rounded cursor-pointer">
+                                <input type="text" id="accentColorHex" value="#4f46e5" class="form-input w-32 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                <button id="resetColorBtn" class="text-sm text-indigo-600 hover:text-indigo-800">Reset to default</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Settings -->
+                <div id="notifications-settings" class="settings-panel hidden bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Notification Settings</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Notification Preferences</label>
+                            <div class="space-y-3">
+                                <label class="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                                    <div>
+                                        <span class="font-medium">New Incidents</span>
+                                        <p class="text-sm text-gray-500">Notify when new incidents are reported</p>
+                                    </div>
+                                    <div class="relative inline-block w-12 align-middle select-none">
+                                        <input type="checkbox" id="newIncidents" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer checked:right-0 checked:border-indigo-600 transition-all duration-200" checked>
+                                        <label for="newIncidents" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                    </div>
+                                </label>
+                                
+                                <label class="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                                    <div>
+                                        <span class="font-medium">Status Updates</span>
+                                        <p class="text-sm text-gray-500">Notify when incident status changes</p>
+                                    </div>
+                                    <div class="relative inline-block w-12 align-middle select-none">
+                                        <input type="checkbox" id="statusUpdates" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer checked:right-0 checked:border-indigo-600 transition-all duration-200" checked>
+                                        <label for="statusUpdates" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                    </div>
+                                </label>
+                                
+                                <label class="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                                    <div>
+                                        <span class="font-medium">System Alerts</span>
+                                        <p class="text-sm text-gray-500">Notify about system issues and updates</p>
+                                    </div>
+                                    <div class="relative inline-block w-12 align-middle select-none">
+                                        <input type="checkbox" id="systemAlerts" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer checked:right-0 checked:border-indigo-600 transition-all duration-200" checked>
+                                        <label for="systemAlerts" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Notification Display Duration</label>
+                            <div class="flex items-center">
+                                <input type="range" id="notificationDuration" min="1000" max="10000" step="1000" value="3000" class="w-64 h-2 bg-gray-300 rounded-lg appearance-none focus:outline-none focus:bg-indigo-300">
+                                <span id="durationText" class="ml-3 text-sm text-gray-700">3 seconds</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Notifications</label>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="emailNotifications" class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500">
+                                <span class="ml-2">Send critical alerts to email</span>
+                            </div>
+                            <div class="mt-3" id="emailInputContainer">
+                                <input type="email" id="notificationEmail" placeholder="Your email address" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Management -->
+                <div id="data-settings" class="settings-panel hidden bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Data Management</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-yellow-700">
+                                        These settings affect how data is stored and managed in the system. Use caution when making changes.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Data Storage</label>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-600">Browser Storage Usage</span>
+                                    <span id="storageUsage" class="text-sm font-medium">0 MB / 5 MB</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div id="storageUsageBar" class="bg-indigo-600 h-2 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <button id="exportAllDataBtn" class="flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <i class="fas fa-download mr-2"></i>
+                                Export All Data
+                            </button>
+                            
+                            <button id="importDataBtn" class="flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <i class="fas fa-upload mr-2"></i>
+                                Import Data
+                            </button>
+                            <input type="file" id="importFileInput" class="hidden" accept=".json">
+                            
+                            <hr class="my-4">
+                            
+                            <button id="resetAllDataBtn" class="flex items-center px-4 py-2 border border-red-300 rounded-md shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                <i class="fas fa-trash-alt mr-2"></i>
+                                Reset All Data
+                            </button>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Data Retention Policy</label>
+                            <select id="dataRetention" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                <option value="forever">Keep data indefinitely</option>
+                                <option value="year">Delete data older than 1 year</option>
+                                <option value="6months">Delete data older than 6 months</option>
+                                <option value="3months">Delete data older than 3 months</option>
+                                <option value="month">Delete data older than 1 month</option>
+                            </select>
+                            <p class="mt-1 text-sm text-gray-500">
+                                This affects how long incident data is stored in the system.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Settings -->
+                <div id="account-settings" class="settings-panel hidden bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Account Settings</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-500 text-2xl">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-800">Demo User</h3>
+                                <p class="text-sm text-gray-500">traffic.admin@example.com</p>
+                            </div>
+                            <button class="text-sm text-indigo-600 hover:text-indigo-800">Change Avatar</button>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                            <input type="text" id="userName" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="Demo User">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="userEmail" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="traffic.admin@example.com">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                            <input type="text" class="form-input w-full rounded-md border-gray-300 bg-gray-100 cursor-not-allowed" value="Administrator" disabled>
+                            <p class="mt-1 text-sm text-gray-500">
+                                Contact system administrator to change your role.
+                            </p>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Change Password</label>
+                            <div class="space-y-3">
+                                <input type="password" id="currentPassword" placeholder="Current password" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                <input type="password" id="newPassword" placeholder="New password" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                <input type="password" id="confirmPassword" placeholder="Confirm new password" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            </div>
+                            <button class="mt-3 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Change Password
+                            </button>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <div>
+                            <button class="flex items-center px-4 py-2 border border-red-300 rounded-md shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                <i class="fas fa-sign-out-alt mr-2"></i>
+                                Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/main.js"></script>
+
+    <style>
+    /* Toggle switch */
+    .toggle-checkbox:checked + .toggle-label {
+        background-color: #4f46e5;
+    }
+    
+    /* Settings Navigation */
+    .settings-nav-item.active {
+        color: #4f46e5;
+        background-color: #eff6ff;
+        font-weight: 500;
+    }
+    
+    /* Theme options */
+    .theme-option.active {
+        border-color: #4f46e5;
+        background-color: #f5f5ff;
+    }
+    </style>
+</body>
+</html> 

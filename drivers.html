@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drivers - Traffic Management Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Sidebar -->
+    <div class="sidebar fixed inset-y-0 left-0 w-64 bg-indigo-600 text-white transform transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between p-4">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-traffic-light text-2xl"></i>
+                <span class="text-xl font-bold">Traffic Control</span>
+            </div>
+            <button id="sidebarToggle" class="md:hidden">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="mt-8">
+            <a href="index.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-home w-6"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="drivers.html" class="sidebar-item active flex items-center space-x-3">
+                <i class="fas fa-id-card w-6"></i>
+                <span>Drivers</span>
+            </a>
+            <a href="analytics.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-chart-line w-6"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-users w-6"></i>
+                <span>Personnel</span>
+            </a>
+            <a href="settings.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-cog w-6"></i>
+                <span>Settings</span>
+            </a>
+            <a href="about.html" class="sidebar-item flex items-center space-x-3">
+                <i class="fas fa-info-circle w-6"></i>
+                <span>About Us</span>
+            </a>
+        </nav>
+        
+        <!-- User Profile Section -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-indigo-700">
+            <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                    <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Profile Picture" class="w-10 h-10 rounded-full border-2 border-white">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">John Anderson</p>
+                    <p class="text-xs text-indigo-200 truncate">Traffic Controller</p>
+                </div>
+                <div>
+                    <button class="text-white hover:text-indigo-200 transition-colors" id="userMenuButton">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div id="userMenu" class="absolute bottom-20 right-4 w-48 bg-white rounded-lg shadow-lg hidden z-50">
+                        <ul class="py-1 text-sm text-gray-700">
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-user mr-2"></i>View Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="settings.html" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-cog mr-2"></i>Account Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="login.html" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Sign Out
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Drivers Management</h1>
+            <div class="flex items-center space-x-4">
+                <button id="addDriverBtn" class="btn-primary flex items-center space-x-2">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Driver</span>
+                </button>
+                <div class="relative">
+                    <button class="notification-btn flex items-center space-x-2 text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="dashboard-card p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
+                        <i class="fas fa-id-card w-8 h-8 flex items-center justify-center"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-gray-500 text-sm">Total Drivers</h3>
+                        <div class="flex items-center">
+                            <span id="totalDriversCount" class="text-2xl font-semibold text-gray-800">42</span>
+                            <span class="text-green-600 text-sm ml-2 bg-green-100 px-2 py-0.5 rounded">
+                                <i class="fas fa-arrow-up mr-1"></i>5%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <i class="fas fa-check-circle w-8 h-8 flex items-center justify-center"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-gray-500 text-sm">Active Drivers</h3>
+                        <div class="flex items-center">
+                            <span id="activeDriversCount" class="text-2xl font-semibold text-gray-800">35</span>
+                            <span class="text-green-600 text-sm ml-2 bg-green-100 px-2 py-0.5 rounded">
+                                <i class="fas fa-arrow-up mr-1"></i>3%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                        <i class="fas fa-exclamation-triangle w-8 h-8 flex items-center justify-center"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-gray-500 text-sm">License Expiring</h3>
+                        <div class="flex items-center">
+                            <span id="expiringLicenseCount" class="text-2xl font-semibold text-gray-800">7</span>
+                            <span class="text-red-600 text-sm ml-2 bg-red-100 px-2 py-0.5 rounded">
+                                <i class="fas fa-arrow-up mr-1"></i>2%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-red-100 text-red-600">
+                        <i class="fas fa-car-crash w-8 h-8 flex items-center justify-center"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-gray-500 text-sm">Incident Involved</h3>
+                        <div class="flex items-center">
+                            <span id="incidentDriversCount" class="text-2xl font-semibold text-gray-800">5</span>
+                            <span class="text-yellow-600 text-sm ml-2 bg-yellow-100 px-2 py-0.5 rounded">
+                                <i class="fas fa-minus mr-1"></i>0%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex-1">
+                    <div class="relative">
+                        <input type="text" id="driverSearch" placeholder="Search drivers..." 
+                               class="form-input w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <select id="statusFilter" class="form-input rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option value="">Status: All</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="suspended">Suspended</option>
+                    </select>
+                    <select id="typeFilter" class="form-input rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option value="">License Type: All</option>
+                        <option value="A">Class A</option>
+                        <option value="B">Class B</option>
+                        <option value="C">Class C</option>
+                        <option value="D">Class D</option>
+                    </select>
+                    <button id="clearFilters" class="btn-secondary flex items-center space-x-2 px-4 py-2">
+                        <i class="fas fa-times"></i>
+                        <span>Clear</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Drivers Table -->
+        <div class="bg-white p-6 rounded-lg shadow-md overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Driver</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">License No.</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expiry</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Violations</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="driversTableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Driver data will be loaded here -->
+                        <tr class="animate-pulse">
+                            <td colspan="7" class="px-6 py-4 text-center text-gray-500">Loading drivers data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="flex items-center justify-between mt-6">
+                <div>
+                    <p class="text-sm text-gray-700">
+                        Showing <span id="startRange">1</span> to <span id="endRange">10</span> of <span id="totalDrivers">42</span> entries
+                    </p>
+                </div>
+                <nav class="flex items-center space-x-2">
+                    <button id="prevPage" class="px-3 py-1 rounded-md bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-600 disabled:opacity-50">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div id="paginationNumbers" class="flex items-center space-x-1">
+                        <button class="px-3 py-1 rounded-md bg-indigo-600 text-white">1</button>
+                        <button class="px-3 py-1 rounded-md bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-600">2</button>
+                        <button class="px-3 py-1 rounded-md bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-600">3</button>
+                        <span class="px-3 py-1">...</span>
+                        <button class="px-3 py-1 rounded-md bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-600">5</button>
+                    </div>
+                    <button id="nextPage" class="px-3 py-1 rounded-md bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-600">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Driver Modal -->
+    <div id="addDriverModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="modal-overlay absolute inset-0 bg-gray-500 bg-opacity-75"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full">
+                <div class="flex items-center justify-between p-6 border-b">
+                    <h3 class="text-xl font-semibold text-gray-900">Add New Driver</h3>
+                    <button id="closeAddDriverModal" class="text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form id="addDriverForm" class="p-6">
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                                <input type="text" id="firstName" name="firstName" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="licenseNumber" class="block text-sm font-medium text-gray-700">License Number</label>
+                            <input type="text" id="licenseNumber" name="licenseNumber" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="licenseType" class="block text-sm font-medium text-gray-700">License Type</label>
+                                <select id="licenseType" name="licenseType" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    <option value="">Select Type</option>
+                                    <option value="A">Class A</option>
+                                    <option value="B">Class B</option>
+                                    <option value="C">Class C</option>
+                                    <option value="D">Class D</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="expiryDate" class="block text-sm font-medium text-gray-700">Expiry Date</label>
+                                <input type="date" id="expiryDate" name="expiryDate" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                            <select id="status" name="status" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-end space-x-3">
+                        <button type="button" id="cancelAddDriver" class="btn-secondary">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            Add Driver
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Driver Modal -->
+    <div id="viewDriverModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="modal-overlay absolute inset-0 bg-gray-500 bg-opacity-75"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full">
+                <div class="flex items-center justify-between p-6 border-b">
+                    <h3 class="text-xl font-semibold text-gray-900">Driver Details</h3>
+                    <button id="closeViewDriverModal" class="text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="driverDetails" class="p-6">
+                    <!-- Driver details will be loaded here -->
+                </div>
+                <div class="px-6 py-4 border-t flex justify-end space-x-3">
+                    <button id="deleteDriver" class="btn-danger">
+                        <i class="fas fa-trash-alt mr-2"></i>Delete
+                    </button>
+                    <button id="editDriver" class="btn-primary">
+                        <i class="fas fa-edit mr-2"></i>Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/drivers.js"></script>
+</body>
+</html> 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drivers Page - Setup Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-indigo-600 mb-2">
+                <i class="fas fa-id-card mr-2"></i>
+                Drivers Management Setup
+            </h1>
+            <p class="text-gray-600">Follow these steps to correctly set up the Drivers Management page</p>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Quick Setup</h2>
+            <p class="mb-4">Run the setup script to automatically create and populate the drivers database:</p>
+            <a href="setup_drivers.php" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-colors mb-4">
+                <i class="fas fa-cog mr-2"></i>
+                Run Setup Script
+            </a>
+            <p class="text-gray-600 italic">After running the setup, you'll be redirected to the Drivers page.</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Troubleshooting</h2>
+            <p class="mb-4">If you're experiencing issues, run the debug tool to check your database connection:</p>
+            <a href="debug_db.php" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg transition-colors mb-4">
+                <i class="fas fa-bug mr-2"></i>
+                Run Debug Tool
+            </a>
+            <p class="text-gray-600">The debug tool will check your database connection and show detailed information.</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Manual Setup</h2>
+            <p class="mb-4">If you prefer to set up manually, follow these steps:</p>
+            <ol class="list-decimal pl-6 space-y-3 mb-4">
+                <li>Make sure MySQL server is running</li>
+                <li>Check that the database credentials in <code class="bg-gray-100 px-2 py-1 rounded">api/config.php</code> are correct</li>
+                <li>Create a database named <code class="bg-gray-100 px-2 py-1 rounded">traffic_management</code></li>
+                <li>Run the SQL queries in <code class="bg-gray-100 px-2 py-1 rounded">database.sql</code> to create tables</li>
+                <li>Ensure PHP has permissions to access the database</li>
+            </ol>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Next Steps</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="drivers.html" class="bg-green-600 hover:bg-green-700 text-white text-center font-bold py-4 px-6 rounded-lg transition-colors">
+                    <i class="fas fa-id-card mr-2"></i>
+                    Go to Drivers Page
+                </a>
+                <a href="index.html" class="bg-blue-600 hover:bg-blue-700 text-white text-center font-bold py-4 px-6 rounded-lg transition-colors">
+                    <i class="fas fa-home mr-2"></i>
+                    Return to Dashboard
+                </a>
+            </div>
+        </div>
+        
+        <footer class="text-center text-gray-500 text-sm">
+            <p>If you continue to experience issues, check the PHP error logs or contact support.</p>
+        </footer>
+    </div>
+</body>
+</html> 
